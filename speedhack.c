@@ -4,12 +4,12 @@
 float SPEED_MULTIPLIER = 2.0f;
 void install(void) __attribute__ ((constructor));
 
-void* (*scheduler_update)(void*,void*,float);
-void* (*scheduler_update_tramp)(void*,void*,float);
+long scheduler_update;
+void* (*scheduler_update_tramp)(void*);
 
-void speedhack(void* s,void* a,float num) {
-	scheduler_update_tramp(s,a,num);
-	float* m_fDeltaTime = (float*)((intptr_t)s+0x90);
+void speedhack(void* instance) {
+	scheduler_update_tramp(instance);
+	float* m_fDeltaTime = (float*)((intptr_t)instance+0x90);
 	*m_fDeltaTime = (*m_fDeltaTime)/SPEED_MULTIPLIER;
 }
 
